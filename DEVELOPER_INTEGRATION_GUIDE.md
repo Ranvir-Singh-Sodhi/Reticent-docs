@@ -24,19 +24,20 @@ will be detected.
   not put it in browser code or commit it to source control.
 - Configure `GROQ_API_KEY` on the Reticent AI server. Callers do not send an
   OpenAI or Groq provider key.
-- Free and Startup API keys use the fixed GPT OSS 20B model. Enterprise API
-  keys use the model selected in the account settings (GPT OSS 20B or 120B).
+- Free and Startup accounts use the fixed GPT OSS 20B model. Enterprise
+  accounts use the model selected in the account settings (GPT OSS 20B or 120B).
   The sanitize endpoint does not accept a `model`, `messages`, `temperature`,
   or `stream` option.
 - Use HTTPS for deployed environments.
 
 ## Plans, quotas, and models
 
-Paid quotas are applied independently to each API key. Startup allows
+The plan and monthly quotas belong to the user account and are shared by all
+API keys owned by that account. Startup allows
 10,000,000 request units **or** 10,000,000 LLM tokens per calendar month,
 whichever limit is reached first. Enterprise allows 50,000,000 request units
 **or** 50,000,000 LLM tokens per calendar month, whichever is reached first. LLM
-tokens include provider-reported prompt and completion tokens. Free keys allow
+tokens include provider-reported prompt and completion tokens. Free accounts allow
 100 request units per month and do not have a separate token quota.
 
 There is no per-request character limit on the prompt. Request usage is
@@ -48,8 +49,8 @@ usage past the monthly request quota; subsequent requests are throttled with
 HTTP `429` until the next calendar month. Reaching the separate monthly token
 quota remains a hard stop. There is no automatic overage. Request and token
 usage reset at the beginning of each calendar month. The 10 MB upload and
-80,000-character extracted-text limits still apply. Free and Startup keys
-always use GPT OSS 20B. Enterprise keys can use the account-selected GPT OSS
+80,000-character extracted-text limits still apply. Free and Startup accounts
+always use GPT OSS 20B. Enterprise accounts can use the account-selected GPT OSS
 20B or GPT OSS 120B model.
 
 ## Endpoint and authentication
