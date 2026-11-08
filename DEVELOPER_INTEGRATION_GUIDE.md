@@ -24,10 +24,33 @@ will be detected.
   not put it in browser code or commit it to source control.
 - Configure `GROQ_API_KEY` on the Reticent AI server. Callers do not send an
   OpenAI or Groq provider key.
-- Configure the selected LLM model in the dashboard's account settings. The
-  sanitize endpoint does not accept a `model`, `messages`, `temperature`, or
-  `stream` option.
+- Free and Startup API keys use the fixed GPT OSS 20B model. Enterprise API
+  keys use the model selected in the account settings (GPT OSS 20B or 120B).
+  The sanitize endpoint does not accept a `model`, `messages`, `temperature`,
+  or `stream` option.
 - Use HTTPS for deployed environments.
+
+## Plans, quotas, and models
+
+Paid quotas are applied independently to each API key. Startup allows
+10,000,000 request units **or** 10,000,000 LLM tokens per calendar month,
+whichever limit is reached first. Enterprise allows 50,000,000 request units
+**or** 50,000,000 LLM tokens per calendar month, whichever is reached first. LLM
+tokens include provider-reported prompt and completion tokens. Free keys allow
+100 request units per month and do not have a separate token quota.
+
+There is no per-request character limit on the prompt. Request usage is
+weighted by the complete prompt sent for processing, including extracted
+document text: Each started block of 20,000 characters counts as one request unit
+(1–20,000 characters = 1 unit; 20,001–40,000 = 2; 40,001–60,000 = 3).
+Requests are not rejected just for being large. A weighted request can take
+usage past the monthly request quota; subsequent requests are throttled with
+HTTP `429` until the next calendar month. Reaching the separate monthly token
+quota remains a hard stop. There is no automatic overage. Request and token
+usage reset at the beginning of each calendar month. The 10 MB upload and
+80,000-character extracted-text limits still apply. Free and Startup keys
+always use GPT OSS 20B. Enterprise keys can use the account-selected GPT OSS
+20B or GPT OSS 120B model.
 
 ## Endpoint and authentication
 
@@ -51,8 +74,10 @@ Send a JSON object with one required string field:
 }
 ```
 
-The prompt limit is 20,000 characters. The endpoint processes one prompt at a
-time; it does not accept OpenAI-style role/message arrays.
+The endpoint accepts one caller-supplied prompt string, including prompts
+larger than 20,000 characters. Larger prompts consume proportionally more
+monthly request usage as described above. It does not accept OpenAI-style
+role/message arrays.
 
 ### Successful response
 
@@ -180,10 +205,12 @@ The API returns JSON errors. Common status codes are:
 
 | Status | Meaning |
 |---|---|
-| `400` | Missing/invalid prompt, unsupported upload, or request limit exceeded. |
+| `400` | Missing/invalid prompt, prompt too long, or unsupported/oversized upload. |
 | `401` | Missing, invalid, or revoked API key. |
+| `429` | The API key reached its monthly request or LLM-token quota; requests resume after reset. |
 | `502` | The LLM provider is not configured or could not return a response. |
 | `500` | Redaction failed; the request is blocked. |
+| `503` | Usage storage is temporarily unavailable. |
 
 Check the `error` and, when provided, `request_id` fields. Do not retry
 validation errors unchanged.
