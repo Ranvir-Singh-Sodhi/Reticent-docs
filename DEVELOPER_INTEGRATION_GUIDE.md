@@ -53,6 +53,12 @@ usage reset at the beginning of each calendar month. The 10 MB upload and
 always use GPT OSS 20B. Enterprise accounts can use the account-selected GPT OSS
 20B or GPT OSS 120B model.
 
+The dashboard's **Sanitized requests** card and the plan usage bar both show
+this account-wide request-unit total for the current month. A request is
+counted when it passes authentication, before sanitizing runs, so a request that
+later fails still counts toward quota. The PII-redacted and latency cards are
+per selected API key.
+
 ## Endpoint and authentication
 
 ```text
