@@ -224,3 +224,15 @@ Assess the complete deployment separately, including reverse-proxy, hosting,
 application, and provider logging and retention policies. Secure the API key,
 use TLS, and avoid logging raw prompts or restored responses in your own
 application unless required and appropriately protected.
+
+### Encryption
+
+- **In transit:** The Reticent AI API is served over HTTPS only in production
+  (HTTP redirects to HTTPS and HSTS is enabled). Always call the API with an
+  `https://` base URL; never send your API key over plain HTTP.
+- **At rest:** API keys are stored encrypted (AES-256-GCM), so keep your own
+  copy in a secrets manager. Pending-registration
+  details and payment-session identifiers are encrypted the same way, and
+  passwords are stored only as salted hashes.
+- Prompts and uploads are not stored; they are processed in memory and sent to
+  the LLM provider over TLS.
