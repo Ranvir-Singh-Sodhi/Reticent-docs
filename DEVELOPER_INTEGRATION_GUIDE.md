@@ -20,8 +20,11 @@ will be detected.
 
 ## Before you start
 
-- Create an API key in the Reticent AI dashboard. Keep it on your server; do
-  not put it in browser code or commit it to source control.
+- Create an API key in the Reticent AI dashboard (**API Keys** page). Keep it on your server; do
+  not put it in browser code or commit it to source control. Any key,
+  including the first one generated at registration, can be revoked there; if
+  all keys are revoked, generate a new one before calling the API (sign-in does
+  not recreate keys automatically).
 - Configure `GROQ_API_KEY` on the Reticent AI server. Callers do not send an
   OpenAI or Groq provider key.
 - Free and Startup accounts use the fixed GPT OSS 20B model. Enterprise
@@ -31,6 +34,11 @@ will be detected.
 - Use HTTPS for deployed environments.
 
 ## Plans, quotas, and models
+
+Paid plans are monthly subscriptions billed through Cashfree (e-NACH/UPI
+AutoPay, cards). Cancel from **Billing > Cancel Subscription**; paid access
+continues until the end of the current billing period. See the in-app Legal
+Policies page (`/legal`) for terms, cancellation, and refunds.
 
 The plan and monthly quotas belong to the user account and are shared by all
 API keys owned by that account. Startup allows
@@ -214,7 +222,7 @@ The API returns JSON errors. Common status codes are:
 |---|---|
 | `400` | Missing/invalid prompt, prompt too long, or unsupported/oversized upload. |
 | `401` | Missing, invalid, or revoked API key. |
-| `429` | The API key reached its monthly request or LLM-token quota; requests resume after reset. |
+| `429` | The API key exceeded the per-key rate limit (1,000 requests per minute by default; retry after a short delay) or the account reached its monthly request or LLM-token quota (requests resume after reset). |
 | `502` | The LLM provider is not configured or could not return a response. |
 | `500` | Redaction failed; the request is blocked. |
 | `503` | Usage storage is temporarily unavailable. |
