@@ -35,10 +35,11 @@ will be detected.
 
 ## Plans, quotas, and models
 
-Paid plans are monthly subscriptions billed through Cashfree (e-NACH/UPI
-AutoPay, cards). Cancel from **Billing > Cancel Subscription**; paid access
-continues until the end of the current billing period. See the in-app Legal
-Policies page (`/legal`) for terms, cancellation, and refunds.
+Paid plans are monthly, sold as a **one-time payment per 30 days** through
+Cashfree's Standard Payment Gateway (Pay Monthly (One-Time) on the Billing
+page). Renewals are manual - nothing auto-debits - and the account reverts to
+Free when `plan_expires_at` passes. See the in-app Legal Policies page
+(`/legal`) for terms, cancellation, and refunds.
 
 The plan and monthly quotas belong to the user account and are shared by all
 API keys owned by that account. Startup allows
