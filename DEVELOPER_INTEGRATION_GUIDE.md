@@ -227,6 +227,7 @@ The API returns JSON errors. Common status codes are:
 |---|---|
 | `400` | Missing/invalid prompt, prompt too long, or unsupported/oversized upload. |
 | `401` | Missing, invalid, or revoked API key. |
+| `413` | The prompt plus extracted document text exceeds the LLM provider's per-request token limit for the account's model/tier. Upload a smaller file or split it into smaller parts; the request units already charged are not refunded. |
 | `429` | The API key exceeded the per-key rate limit (1,000 requests per minute by default; retry after a short delay) or the account reached its monthly request or LLM-token quota (requests resume after reset). |
 | `502` | The LLM provider is not configured or could not return a response. |
 | `500` | Redaction failed; the request is blocked. |
