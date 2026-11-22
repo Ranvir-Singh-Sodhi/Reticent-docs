@@ -213,7 +213,11 @@ include Tesseract; local installations must install it and make it available
 on `PATH`.
 
 Encrypted PDFs, legacy `.doc`/`.xls` files, binary files, and code/config files
-that are not UTF-8 text are not supported.
+that are not UTF-8 text are not supported. Dotenv secret files (`.env`,
+`.env.production`, `.env.local`, and similar) are refused with a warning
+without being read or forwarded to the AI provider; the attempt still counts
+against the monthly request quota. Files that merely use the `.env` extension
+(for example `sample.env`) remain supported.
 
 ## Errors
 
